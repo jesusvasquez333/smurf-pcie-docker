@@ -11,5 +11,8 @@ RUN git submodule sync && git submodule update --init --recursive
 ENV PYTHONPATH /usr/local/src/smurf-pcie/software/python:${PYTHONPATH}
 ENV PYTHONPATH /usr/local/src/smurf-pcie/software/python:${PYTHONPATH}
 ENV PYTHONPATH /usr/local/src/smurf-pcie/firmware/submodules/axi-pcie-core/python:${PYTHONPATH}
-# Start the GUI bu default
-CMD ["python3", "PcieGui.py"]
+
+# Run the startup script by default
+WORKDIR software
+ADD start.sh .
+ENTRYPOINT ["./start.sh"]
