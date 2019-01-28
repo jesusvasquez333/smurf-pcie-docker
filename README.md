@@ -30,7 +30,7 @@ Where **<TAG>** represents the specific tagged version you want to use.
 
 The container can be in two different modes:
 - GUI mode: In this mode the PCIe GUI is open,
-- Configuration mode: In this mode, a configuration file is loaded into the PCIe's FPGA, without starting any GUI. The configuration file can be one of the 2 defaults included in the `smurf-pcie` repository, or it can be a custom one present in your host.
+- Configuration mode: In this mode, a configuration file is loaded into the PCIe's FPGA, without starting any GUI. The configuration file can be one of the 2 defaults included in the `smurf-pcie` repository.
 
 
 If you want to open the GUI, the you need go some extra steps in order to be able to forward X from the container to the host; and these steps are different depending if you are running the container locally in the host, or via an ssh connection.
@@ -72,6 +72,7 @@ docker run -ti --rm \
 -e DISPLAY=$DISPLAY \
 -v $XAUTH:$XAUTH \
 -e XAUTHORITY=$XAUTH \
+--device /dev/datadev_0 \
 jesusvasquez333/smurf-pcie:<TAG>
 ```
 
@@ -84,7 +85,8 @@ $ cat run_docker.sh
 #!/usr/bin/env bash
 
 docker run -ti --rm \
-jesusvasquez333/smurf-pcie:<TAG> load_default=rssi
+--device /dev/datadev_0 \
+jesusvasquez333/smurf-pcie:<TAG> rssi
 ```
 
 #### Load default `pcie_fsbl_config.yml`
@@ -94,21 +96,9 @@ $ cat run_docker.sh
 #!/usr/bin/env bash
 
 docker run -ti --rm \
-jesusvasquez333/smurf-pcie:<TAG> load_default=fsbl
-```
-
-#### Load a custom configuration
-
-```
-$ cat run_docker.sh
-#!/usr/bin/env bash
-
-docker run -ti --rm \
--v <CONFIG_DIR>:/config \
-jesusvasquez333/smurf-pcie:<TAG> load=/config/<CONFIG_FILE>
+--device /dev/datadev_0 \
+jesusvasquez333/smurf-pcie:<TAG> fsbl
 ```
 
 where:
 - **TAG** is the tag version of the docker image you want to use,
-- **CONFIG_DIR** is the full path to the folder containing your custom configuration file,
-- **CONFIG_FILE** is the name of your custom configuration file.
