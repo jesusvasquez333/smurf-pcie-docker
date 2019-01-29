@@ -5,15 +5,23 @@ if [ $# -eq 0 ]; then
     echo "Starting GUI"
     python3 scripts/PcieGui.py
 else
-    # If the argument 'rssi' is passed to the script, load the rssi configuration
-    if [ ${arg} == "rssi" ]; then
-        config_file="config/pcie_rssi_config.yml"
-    # If the argument 'fsbl' is passed to the script, load the fsbl configuration
-    elif [ ${arg} == "fsbl" ]; then
-        config_file="config/pcie_fsbl_config.yml"
-    # Abort if the argument is invalid
+    # Verify we are getting only 1 argument
+    if [ $# -eq 1 ]; then
+        # Read the input argument
+        arg=$1
+        # If the argument 'rssi' is passed to the script, load the rssi configuration
+        if [ ${arg} == "rssi" ]; then
+            config_file="config/pcie_rssi_config.yml"
+        # If the argument 'fsbl' is passed to the script, load the fsbl configuration
+        elif [ ${arg} == "fsbl" ]; then
+            config_file="config/pcie_fsbl_config.yml"
+        # Abort if the argument is invalid
+        else
+            echo "Invalid default configuration. Only 'rssi' and 'fsbl' are supported."
+            exit
+        fi
     else
-        echo "Invalid default configuration"
+        echo "Invalid number of arguments"
         exit
     fi
 
