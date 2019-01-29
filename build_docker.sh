@@ -5,7 +5,7 @@ repo=smurf-pcie
 org=jesusvasquez333
 
 # Use the git tag to tag the docker image
-tag=$(git describe --tags --always)
+tag=$(git describe --tags --always --dirty)
 
 # Build the docker and tagged it with the application version
 docker build -t ${org}/${repo} .
